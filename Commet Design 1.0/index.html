@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX Comment Section Design </title>
+</head>
+<body>
+    
+
+
+
+    <div class="container">
+        <div class="head"><h1>Post a Comment</h1></div>
+        <div><span id="comment">0</span> Comments</div>
+        <div class="text"><p>We are happy to hear from you</p></div>
+        <div class="comments"></div>
+        <div class="commentbox">
+            <img src="user1.png" alt="">
+            <div class="content">
+                <h2>Comment as: </h2>
+                <input type="text" value="Anonymous" class="user">
+
+                <div class="commentinput">
+                    <input type="text" placeholder="Enter comment" class="usercomment">
+                    <div class="buttons">
+                        <button type="submit" disabled id="publish">Publish</button>
+                        <div class="notify">
+                            <input type="checkbox" class="notifyinput"> <span>Notify me</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="policy">This site is procted by reCAPTCHA and the Google <a href="">privacy policy</a> and <a href="">Terms of Service</a> apply.</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+
+
+const USERID = {
+    name: null,
+    identity: null,
+    image: null,
+    message: null,
+    date: null
+}
+
+const userComment = document.querySelector(".usercomment");
+const publishBtn = document.querySelector("#publish");
+const comments = document.querySelector(".comments");
+const userName = document.querySelector(".user");
+const notify = document.querySelector(".notifyinput");
+
+    userComment.addEventListener("input", e => {
+        if(!userComment.value) {
+            publishBtn.setAttribute("disabled", "disabled");
+            publishBtn.classList.remove("abled")
+        }else {
+            publishBtn.removeAttribute("disabled");
+            publishBtn.classList.add("abled")
+        }
+    })
+
+    function addPost() {
+        if(!userComment.value) return;
+        USERID.name = userName.value;
+        if(USERID.name === "Anonymous") {
+            USERID.identity = false;
+            USERID.image = "anonymous.png"
+        }else {
+            USERID.identity = true;
+            USERID.image = "user.png"
+        }
+
+        USERID.message = userComment.value;
+        USERID.date = new Date().toLocaleString();
+        let published = 
+        `<div class="parents">
+            <img src="${USERID.image}">
+            <div>
+                <h1>${USERID.name}</h1>
+                <p>${USERID.message}</p>
+                <div class="engagements"><img src="like.png" id="like"><img src="share.png" alt=""></div>
+                <span class="date">${USERID.date}</span>
+            </div>    
+        </div>`
+
+        comments.innerHTML += published;
+        userComment.value = "";
+        publishBtn.classList.remove("abled")
+
+        let commentsNum = document.querySelectorAll(".parents").length;
+        document.getElementById("comment").textContent = commentsNum;
+
+    }
+
+    publishBtn.addEventListener("click", addPost);
+
+</script>
+
+</body>
+</html>
